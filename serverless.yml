@@ -1,0 +1,51 @@
+org: andreacoa
+service: api-songs
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  # Default memory size for functions (default: 256MB)
+  memorySize: 256
+  timeout: 30
+  iam:
+    role: arn:aws:iam::123412341234:role/LabRole
+  environment:
+    TABLE_NAME: ${sls:stage}-t_songs # modificar
+
+# functions:
+# completar
+
+resources:
+  Resources:
+    TablaSongs:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: artist_email
+            AttributeType: S
+          - AttributeName: name#album_name#genre#year
+            AttributeType: S
+          - AttributeName: genre
+            AttributeType: S
+          - AttributeName: song_uuid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: artist_email
+            KeyType: HASH
+          - AttributeName: name#album_name#genre#year
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+          - IndexName: genre-index
+            KeySchema:
+              - AttributeName: genre
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: song_uuid-index
+            KeySchema:
+              - AttributeName: song_uuid
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
