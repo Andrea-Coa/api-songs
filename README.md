@@ -4,6 +4,12 @@ Proyecto Final Cloud Computing.
 
 Microservicio de canciones para API de streaming de música.
 
+## Missing:
+
+- Fix get by genre: usar scan, genre ya no está indexado.
+
+- serverless functions: declarar lambdas en `serverless.yml`
+
 ## Estructura de una canción
 
 ```json

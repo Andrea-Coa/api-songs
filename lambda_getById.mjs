@@ -7,13 +7,13 @@ const docClient = DynamoDBDocumentClient.from(client);
 export const handler = async(event) => {
     // add token verification
 
-    const song_id = event["song_id"];
+    const song_uuid = event["song_uuid"];
     const queryCommand = new QueryCommand({
         TableName: "t_songs_test",
         IndexName: "song_uuid-index",
-        KeyConditionExpression: "song_uuid = :song_id",
+        KeyConditionExpression: "song_uuid = :song_uuid",
         ExpressionAttributeValues: {
-            ":song_id": song_id
+            ":song_uuid": song_uuid
         }
     });
 

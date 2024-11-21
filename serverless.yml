@@ -22,26 +22,18 @@ resources:
       Properties:
         TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
-          - AttributeName: artist_email
+          - AttributeName: artista_email
             AttributeType: S
-          - AttributeName: name#album_name#genre#year
-            AttributeType: S
-          - AttributeName: genre
+          - AttributeName: genre#release-date
             AttributeType: S
           - AttributeName: song_uuid
             AttributeType: S
         KeySchema:
-          - AttributeName: artist_email
+          - AttributeName: artista_email
             KeyType: HASH
-          - AttributeName: name#album_name#genre#year
+          - AttributeName: genre#release-date
             KeyType: RANGE
         GlobalSecondaryIndexes:
-          - IndexName: genre-index
-            KeySchema:
-              - AttributeName: genre
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
           - IndexName: song_uuid-index
             KeySchema:
               - AttributeName: song_uuid

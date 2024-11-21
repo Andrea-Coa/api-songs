@@ -7,28 +7,57 @@ const docClient = DynamoDBDocumentClient.from(client);
 
 export const handler = async(event, context) => {
 
-    // add verification
-    const partition_key = event["artist_email"]
-    const sorting_key = event["name#album_name#genre#year"]
-    const uuid = v4();
-    const artist_name = event["artist_name"]
+    // add token verification
+    const partition_key = event["artista_email"]
+    const sorting_key = event["genre#release-date"]
+    const uuid = v4(); // GSI
+    const genre = event["genre"]
+    const album_uuid = event["album_uuid"]
+    const name = event["name"]
     const data = event["data"]
-        
+
+    if (!(partition_key && sorting_key && uuid && genre && album_uuid && name && data)) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: "Fill in all the required fields."
+            })
+        };
+    }
+
     const putCommand = new PutCommand({
         TableName: 't_songs_test',
         Item: {
-            "artist_email": partition_key,
-            "name#album_name#genre#year":sorting_key,
-            "uuid":uuid,
-            "artist_name": artist_name,
+            "artista_email": partition_key,
+            "genre#release-date":sorting_key,
+            "song_uuid":uuid,
+            "genre": genre,
+            "album_uuid": album_uuid,
+            "name": name,
             "data": data
         }
     });
 
-    await docClient.send(putCommand);
+    try {
+        await docClient.send(putCommand);
+        
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'Song added successfully.'
+            })
+        };
+    }
+    catch (err) {
+        console.error(err)
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: 'Failed to add song.',
+                error: err.message
+            })
+        };
+    }
 
-    return {
-        statusCode: 200,
-        message: 'Song added successfully.'
-    };
+        
 };
