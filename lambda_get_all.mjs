@@ -7,13 +7,14 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 // parece que funciona
 
 export const handler = async (event) => {
+  const tableName = process.env.TABLE_NAME;
   
   const pagination_config = {
     client: ddbDocClient,
     pageSize: 5,
   };
   const command_input = {
-    TableName: "t_songs_test",
+    TableName: tableName,
   };
   
   const paginatedQuery = paginateScan(

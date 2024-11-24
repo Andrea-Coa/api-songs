@@ -1,5 +1,5 @@
 import {DynamoDBClient} from '@aws-sdk/client-dynamodb';
-import { QueryCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { ScanCommand, DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
@@ -7,18 +7,22 @@ const docClient = DynamoDBDocumentClient.from(client);
 export const handler = async(event) => {
     // add token verification
 
-    const genre = event["genre"];
-    const queryCommand = new QueryCommand({
-        TableName: "t_songs_test",
-        IndexName: "genre-index",
-        KeyConditionExpression: "genre = :genre",
+    const genre = event["body"]["genre"];
+    const tableName = process.env.TABLE_NAME;
+
+    const scanCommand = new ScanCommand({
+        TableName: tableName,
+        FilterExpression: "#genre = :genreValue",
+        ExpressionAttributeNames: {
+            "#genre": "genre"
+        },
         ExpressionAttributeValues: {
-            ":genre": genre
+            ":genreValue": { S: genre }
         }
     });
 
     try {
-        const response = await docClient.send(queryCommand);
+        const response = await docClient.send(scanCommand);
         // const responseBody = JSON.parse(response.body);
         const items = response.Items;
         const count = response.Count;

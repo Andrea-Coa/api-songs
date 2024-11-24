@@ -8,25 +8,28 @@ const docClient = DynamoDBDocumentClient.from(client);
 export const handler = async(event, context) => {
 
     // add token verification
-    const partition_key = event["artista_email"]
-    const sorting_key = event["genre#release-date"]
+    console.log(event)
+    const partition_key = event["body"]["artista_email"];
+    const sorting_key = event["body"]["genre#release-date"];
     const uuid = v4(); // GSI
-    const genre = event["genre"]
-    const album_uuid = event["album_uuid"]
-    const name = event["name"]
-    const data = event["data"]
+    const genre = event["body"]["genre"];
+    const album_uuid = event["body"]["album_uuid"];
+    const name = event["body"]["name"];
+    const data = event["body"]["data"];
+    const tableName = process.env.TABLE_NAME;
 
     if (!(partition_key && sorting_key && uuid && genre && album_uuid && name && data)) {
         return {
             statusCode: 400,
             body: JSON.stringify({
-                message: "Fill in all the required fields."
+                message: "Fill in all the required fields.",
+                uuid: uuid
             })
         };
     }
 
     const putCommand = new PutCommand({
-        TableName: 't_songs_test',
+        TableName: tableName,
         Item: {
             "artista_email": partition_key,
             "genre#release-date":sorting_key,

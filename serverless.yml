@@ -5,14 +5,60 @@ provider:
   name: aws
   runtime: nodejs20.x
   # Default memory size for functions (default: 256MB)
-  memorySize: 256
+  memorySize: 512
   timeout: 30
   iam:
     role: arn:aws:iam::123412341234:role/LabRole
   environment:
     TABLE_NAME: ${sls:stage}-t_songs # modificar
 
-# functions:
+functions:
+get_all_songs:
+  handler: lambda_get_all.handler
+  events:
+    - http:
+        path: /songs/
+        method: get
+        cors: true
+        integration: lambda
+  get_song_by_genre:
+    handler: lambda_getByGenre.handler
+    events:
+      - http:
+          path: /songs/genre
+          method: post
+          cors: true
+          integration: lambda
+  get_song_by_artist_email:
+    handler: lambda_getByArtistEmail.handler
+    events:
+      - http:
+          path: /songs/artist
+          method: post
+          cors: true
+          integration: lambda
+  get_song_by_id:
+    handler: lambda_getById.handler
+    envents:
+      - http:
+          path: /songs/id
+          method: post
+          cors: true
+          integration: lambda
+  post_song:
+    handler: lambda_post_song.handler
+    events:
+      - http:
+          path: /songs/create
+          method: post
+          cors: true
+          integration: lambda
+    package:
+      include:
+        - node_modules/uuid/**
+      exclude:
+        - node_modules/**
+        - '!node_modules/uuid/**'
 # completar
 
 resources:
