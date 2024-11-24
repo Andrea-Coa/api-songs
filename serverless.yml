@@ -13,14 +13,14 @@ provider:
     TABLE_NAME: ${sls:stage}-t_songs # modificar
 
 functions:
-get_all_songs:
-  handler: lambda_get_all.handler
-  events:
-    - http:
-        path: /songs/
-        method: get
-        cors: true
-        integration: lambda
+  get_all_songs:
+    handler: lambda_get_all.handler
+    events:
+      - http:
+          path: /songs/
+          method: get
+          cors: true
+          integration: lambda
   get_song_by_genre:
     handler: lambda_getByGenre.handler
     events:
@@ -39,9 +39,17 @@ get_all_songs:
           integration: lambda
   get_song_by_id:
     handler: lambda_getById.handler
-    envents:
+    events:
       - http:
           path: /songs/id
+          method: post
+          cors: true
+          integration: lambda
+  get_song_by_name:
+    handler: lambda_getByName.handler
+    events:
+      - http:
+          path: /songs/name
           method: post
           cors: true
           integration: lambda

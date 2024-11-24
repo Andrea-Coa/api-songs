@@ -22,7 +22,10 @@ export const handler = async (event) => {
         const response = await docClient.send(queryCommand);
         return {
             statusCode: 200,
-            body: JSON.stringify(response)
+            body: {
+                Count: response['ScannedCount'],
+                Items: response['Items']
+            }
         };
     } catch (err) {
         console.error(err);

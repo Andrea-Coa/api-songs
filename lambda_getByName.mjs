@@ -7,37 +7,37 @@ const docClient = DynamoDBDocumentClient.from(client);
 export const handler = async(event) => {
     // add token verification
 
-    const genre = event["body"]["genre"];
+    const name = event['body']['name'];
     const tableName = process.env.TABLE_NAME;
 
     const scanCommand = new ScanCommand({
         TableName: tableName,
-        FilterExpression: "#genre = :genreValue",
+        FilterExpression: '#name = :nameValue',
         ExpressionAttributeNames: {
-            "#genre": "genre"
+            '#name': 'name'
         },
-        ExpressionAttributeValues: {
-            ":genreValue": genre
+        ExpressionAttributeVales: {
+            'nameValue': name
         }
     });
 
     try {
         const response = await docClient.send(scanCommand);
-        // const responseBody = JSON.parse(response.body);
         const items = response.Items;
         const count = response.Count;
         return {
             statusCode: 200,
             body: {
-              count,
-              items
+                count,
+                items
             }
         };
-    } catch (err) {
+    }
+    catch (err) {
         console.error(err);
         return {
             statusCode: 500,
             body: { error: err.message }
         };
     }
-};
+}

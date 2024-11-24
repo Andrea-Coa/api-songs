@@ -30,10 +30,10 @@ export const handler = async (event) => {
     
     return {
       statusCode: 200,
-      body: JSON.stringify({
+      body: {
         items: result,
         count: result.length
-      })
+      }
     };
   }
   catch (err) {
