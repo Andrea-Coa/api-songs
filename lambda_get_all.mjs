@@ -12,7 +12,7 @@ export const handler = async (event) => {
 
   // ---- start token validation
   const token = event['headers']['Authorization'];
-  const artist_id = event["body"]['tenant_id'];
+  const tenant_id = event["body"]['tenant_id'];
   const tableName = process.env.TABLE_NAME;
   const stage = tableName.split('-')[0]
 
@@ -82,6 +82,9 @@ export const handler = async (event) => {
     const result = [];
     for await (const page of paginatedQuery) {
       result.push(...page.Items)
+      if (result.length> 100) {
+        break;
+      }
     }
     
     return {

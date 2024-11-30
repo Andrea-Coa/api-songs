@@ -21,6 +21,7 @@ export const handler = async(event, context) => {
     const token = event['headers']['Authorization'];
     const tableName = process.env.TABLE_NAME;
     const stage = tableName.split('-')[0];
+    const artist_id = partition_key;
 
 
     if (!token) {
@@ -42,7 +43,7 @@ export const handler = async(event, context) => {
         artist_id: artist_id
     }
 
-    const lambda_funtion_name = `api-users-${stage}-ValidateToken_A`
+    const lambda_funtion_name = `api-artists-${stage}-ValidateToken_A`
     const params = {
         FunctionName: lambda_funtion_name,
         InvocationType: 'RequestResponse',

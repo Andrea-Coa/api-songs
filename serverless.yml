@@ -17,8 +17,8 @@ functions:
     handler: lambda_get_all.handler
     events:
       - http:
-          path: /songs/
-          method: get
+          path: /songs/all
+          method: post
           cors: true
           integration: lambda
   get_song_by_genre:

@@ -11,7 +11,7 @@ export const handler = async(event) => {
 
     const song_uuid = event["body"]["song_uuid"];
     const token = event['headers']['Authorization'];
-    const artist_id = event["body"]['tenant_id'];
+    const tenant_id = event["body"]['tenant_id'];
     const tableName = process.env.TABLE_NAME;
     const stage = tableName.split('-')[0];
 
@@ -22,16 +22,16 @@ export const handler = async(event) => {
         }
     }
     console.log('token', token);
-    if (!artist_id) {
+    if (!tenant_id) {
         return {
             statusCode: 400,
-            message: 'Falta el parámetro artist_id'
+            message: 'Falta el parámetro tenant_id'
         }
     }
 
     const payload = {
         token: token,
-        artist_id: artist_id
+        tenant_id: tenant_id
     }
 
     const lambda_funtion_name = `api-users-${stage}-ValidateToken`

@@ -61,6 +61,8 @@ export const handler = async(event) => {
         };
     }
 
+    // modify to contains
+
     const scanCommand = new ScanCommand({
         TableName: tableName,
         FilterExpression: '#name = :nameValue',
