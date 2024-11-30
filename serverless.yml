@@ -133,14 +133,14 @@ resources:
         AttributeDefinitions:
           - AttributeName: artist_id
             AttributeType: S
-          - AttributeName: genre#release-date
+          - AttributeName: genre#release_date
             AttributeType: S
           - AttributeName: song_uuid
             AttributeType: S
         KeySchema:
           - AttributeName: artist_id
             KeyType: HASH
-          - AttributeName: genre#release-date
+          - AttributeName: genre#release_date
             KeyType: RANGE
         GlobalSecondaryIndexes:
           - IndexName: song_uuid-index
