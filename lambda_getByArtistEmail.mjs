@@ -12,10 +12,11 @@ const lambdaClient = new LambdaClient({region: 'us-east-1'})
 export const handler = async (event) => {
 
     // verificar token
-    const token = event['headers'].get('Authorization');
-    const artist_id = event["body"].get('artist_id');
+    const token = event['headers']['Authorization'];
+    const tenant_id = event['body']['tenant_id']
+    const artist_id = event["body"]['artist_id'];
     const tableName = process.env.TABLE_NAME;
-    stage = tableName.split('-')[0]
+    const stage = tableName.split('-')[0];
 
     if (!token) {
         return {
@@ -24,21 +25,21 @@ export const handler = async (event) => {
         }
     }
     console.log('token', token);
-    if (!artist_id) {
+    if (!tenant_id) {
         return {
             statusCode: 400,
-            message: 'Falta el parámetro artist_id'
+            message: 'Falta el parámetro tenant_id'
         }
     }
 
     const payload = {
         token: token,
-        artist_id: artist_id
+        tenant_id: tenant_id
     }
 
-    lambda_funtion_name = `api-users-${stage}-ValidateToken`
+    const lambda_funtion_name = `api-users-${stage}-ValidateToken`
     const params = {
-        FunctionName: lambdaFunctionName,
+        FunctionName: lambda_funtion_name,
         InvocationType: 'RequestResponse',
         Payload: JSON.stringify(payload)
     };
