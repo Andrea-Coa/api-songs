@@ -29,6 +29,17 @@ functions:
           method: post
           cors: true
           integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
   get_song_by_artist_email:
     handler: lambda_getByArtistEmail.handler
     events:
@@ -37,6 +48,17 @@ functions:
           method: post
           cors: true
           integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
   get_song_by_id:
     handler: lambda_getById.handler
     events:
@@ -45,6 +67,17 @@ functions:
           method: post
           cors: true
           integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
   get_song_by_name:
     handler: lambda_getByName.handler
     events:
@@ -53,6 +86,17 @@ functions:
           method: post
           cors: true
           integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
   post_song:
     handler: lambda_post_song.handler
     events:
@@ -61,6 +105,17 @@ functions:
           method: post
           cors: true
           integration: lambda
+          request:
+            template:
+              application/json: |
+                {
+                  "method": "$context.httpMethod",
+                  "path": "$context.path",
+                  "headers": {
+                    "Authorization": "$input.params('Authorization')"
+                  },
+                  "body": $input.body
+                }
     package:
       include:
         - node_modules/uuid/**
@@ -76,14 +131,14 @@ resources:
       Properties:
         TableName: ${self:provider.environment.TABLE_NAME}
         AttributeDefinitions:
-          - AttributeName: artista_email
+          - AttributeName: artist_id
             AttributeType: S
           - AttributeName: genre#release-date
             AttributeType: S
           - AttributeName: song_uuid
             AttributeType: S
         KeySchema:
-          - AttributeName: artista_email
+          - AttributeName: artist_id
             KeyType: HASH
           - AttributeName: genre#release-date
             KeyType: RANGE
@@ -95,3 +150,5 @@ resources:
             Projection:
               ProjectionType: ALL
         BillingMode: PAY_PER_REQUEST
+        PointInTimeRecoverySpecification:
+          PointInTimeRecoveryEnabled: true

@@ -9,7 +9,7 @@ export const handler = async(event, context) => {
 
     // add token verification
     console.log(event)
-    const partition_key = event["body"]["artista_email"];
+    const partition_key = event["body"]["artist_id"];
     const sorting_key = event["body"]["genre#release-date"];
     const uuid = v4(); // GSI
     const genre = event["body"]["genre"];
@@ -31,7 +31,7 @@ export const handler = async(event, context) => {
     const putCommand = new PutCommand({
         TableName: tableName,
         Item: {
-            "artista_email": partition_key,
+            "artist_id": partition_key,
             "genre#release-date":sorting_key,
             "song_uuid":uuid,
             "genre": genre,

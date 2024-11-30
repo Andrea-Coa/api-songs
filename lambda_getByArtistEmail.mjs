@@ -7,14 +7,19 @@ const docClient = DynamoDBDocumentClient.from(client);
 // parece funcionar
 
 export const handler = async (event) => {
-    const artista_email = event["body"]["artista_email"];
+
+    // verificar token
+    token = event['headers']['Authorization']
+    console.log('token', token)
+
+    const artist_id = event["body"]["artist_id"];
     const tableName = process.env.TABLE_NAME;
 
     const queryCommand = new QueryCommand({
         TableName: tableName,
-        KeyConditionExpression: "artista_email = :artista_email",
+        KeyConditionExpression: "artist_id = :artist_id",
         ExpressionAttributeValues: {
-            ":artista_email": artista_email
+            ":artist_id": artist_id
         }
     });
 
