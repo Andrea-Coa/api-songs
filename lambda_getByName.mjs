@@ -16,8 +16,8 @@ export const handler = async(event) => {
         ExpressionAttributeNames: {
             '#name': 'name'
         },
-        ExpressionAttributeVales: {
-            'nameValue': name
+        ExpressionAttributeValues: {
+            ':nameValue': name
         }
     });
 

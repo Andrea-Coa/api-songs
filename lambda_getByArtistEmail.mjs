@@ -9,8 +9,8 @@ const docClient = DynamoDBDocumentClient.from(client);
 export const handler = async (event) => {
 
     // verificar token
-    token = event['headers']['Authorization']
-    console.log('token', token)
+    const token = event['headers']['Authorization'];
+    console.log('token', token);
 
     const artist_id = event["body"]["artist_id"];
     const tableName = process.env.TABLE_NAME;
