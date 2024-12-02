@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: api-songs
+  description: Documentación de api-songs.
+  version: 1.0.0
+paths:
+  /songs/create:
+    post:
+      summary: Crea una canción
+      description: Crea una canción
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                artist_id:
+                  type: string
+                genre#release_date:
+                  type: string
+                genre:
+                  type: string
+                album_uuid:
+                  type: string
+                name:
+                  type: string
+                data:
+                  type: object
+                  properties:
+                    duration:
+                      type: string
+                    explicit:
+                      type: boolean
+              required:
+                - artist_id
+                - genre#release_date
+      responses:
+        '200':
+          description: Creación exitosa
+        '403':
+          description: No tiene permiso de creación
+  /songs/genre:
+    post:
+      summary: Busca canciones por género
+      description: Busca canciones por género
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                genre:
+                  type: string
+                tenant_id:
+                  type: string
+              required:
+                - tenant_id
+                - genre
+
+      responses:
+        '200':
+          description: Búsqueda exitosa
+        '403':
+          description: No tiene acceso al recurso
+
+  /songs/artist:
+    post:
+        summary: Busca canciones por artista
+        description: Busca canciones por correo del artista
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  artist_id:
+                    type: string
+                  tenant_id:
+                    type: string
+                required:
+                  - tenant_id
+                  - artist_id
+
+        responses:
+          '200':
+            description: Búsqueda exitosa
+          '403':
+            description: No tiene acceso al recurso
+
+  /songs/id:
+    post:
+        summary: Busca canciones por id
+        description: Busca canciones por UUID
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  song_uuid:
+                    type: string
+                  tenant_id:
+                    type: string
+                required:
+                  - tenant_id
+                  - song_uuid
+
+        responses:
+          '200':
+            description: Búsqueda exitosa
+          '403':
+            description: No tiene acceso al recurso
+
+  /songs/name:
+    post:
+        summary: Busca canciones por nombre
+        description: Busca canciones por nombre
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  nombre:
+                    type: string
+                  tenant_id:
+                    type: string
+                required:
+                  - tenant_id
+                  - nombre
+
+        responses:
+          '200':
+            description: Búsqueda exitosa
+          '403':
+            description: No tiene acceso al recurso
+
+  /songs/all:
+    post:
+        summary: Busca todas las canciones
+        description: Busca todas las canciones con límite de 100 
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tenant_id:
+                    type: string
+                required:
+                  - tenant_id
+        responses:
+          '200':
+            description: Búsqueda exitosa
+          '403':
+            description: No tiene acceso al recurso
